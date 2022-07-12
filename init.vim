@@ -1,12 +1,11 @@
 call plug#begin('~/AppData/Local/nvim/pluggedf')
 "Flutter
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " COC
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'thosakwe/vim-flutter'
-Plug 'natebosch/vim-lsc'
-Plug 'natebosch/vim-lsc-dart'
 "Theme
-Plug 'shaunsingh/nord.nvim'
+Plug 'crusoexia/vim-monokai'
+Plug 'tomasiser/vim-code-dark'
 "NerdTree
 Plug 'preservim/nerdtree'
 "Airline
@@ -14,8 +13,11 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 "EasyMotion
 Plug 'easymotion/vim-easymotion'
+"Comment
+Plug 'numToStr/Comment.nvim'
 call plug#end()
 
+set mouse=nicr
 set noerrorbells                                              " Don't add sounds for errors
 set number
 set relativenumber
@@ -34,7 +36,7 @@ set colorcolumn=120
 set encoding=utf-8
 set clipboard=unnamedplus
 set backspace=indent,eol,start
-highlight ColorColumn ctermbg=0 guibg=lightgrey
+" highlight ColorColumn ctermbg=0 guibg=lightgrey
 
 let mapleader = " "
 
@@ -43,10 +45,13 @@ nnoremap <C-Left> :tabp<CR>
 nnoremap <C-Right> :tabn<CR>
 nnoremap <Leader>b :e#<CR>
 
-
+"Comment-------------------------------------------------------------
+lua require('Comment').setup()
 "Theme--------------------------------------------------------
-colorscheme nord
-
+syntax on
+colorscheme monokai
+let g:monokai_term_italic = 1
+let g:monokai_gui_italic = 1
 "NerdTree--------------------------------------------------------
 nnoremap <C-t> :NERDTreeToggle<CR>
 
@@ -61,11 +66,11 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> K :call ShowDocumentation()<CR>
 
 function! ShowDocumentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
+if CocAction('hasProvider', 'hover')
+call CocActionAsync('doHover')
+else
+call feedkeys('K', 'in')
+endif
 endfunction
 
 " Symbol renaming.
@@ -84,7 +89,12 @@ nnoremap <silent><nowait> <C-a>  :<C-u>CocList diagnostics<cr>
 
 "Airline-----------------------------------------------------------------
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='simple'
-
+let g:airline_powerline_fonts = 1 
+let g:airline_theme = 'codedark'
 "EasyMotion-------------------------------------------------------------------------
 nmap <Leader>s <Plug>(easymotion-overwin-f2)
+
+"Flutter---------------------------------------------------------------
+nnoremap <leader>fr :FlutterRun<cr>
+nnoremap <leader>fh :FlutterHotRestart<cr>
+nnoremap <leader>ft :FlutterSplit<cr>
